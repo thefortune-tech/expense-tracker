@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
+import '../../features/transactions/presentation/bloc/transaction_bloc.dart';
 import '../../features/auth_profile/data/datasources/profile_local_datasource.dart';
 import '../../features/auth_profile/data/models/user_profile_model.dart';
 import '../../features/auth_profile/data/repositories/profile_repository_impl.dart';
@@ -76,4 +76,10 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton(() => DeleteBudget(sl()));
 
   sl.registerLazySingleton(() => GetDashboardSummary(sl(), sl()));
+    sl.registerFactory(() => TransactionBloc(
+        getAllTransactions: sl(),
+        addTransaction: sl(),
+        updateTransaction: sl(),
+        deleteTransaction: sl(),
+      ));
 }
