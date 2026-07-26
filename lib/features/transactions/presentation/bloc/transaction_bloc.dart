@@ -36,14 +36,18 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     final result = await getAllTransactions(NoParams());
 
     result.match(
-      (failure) => emit(state.copyWith(
-        status: TransactionStatus.error,
-        errorMessage: failure.message,
-      )),
-      (transactions) => emit(state.copyWith(
-        status: TransactionStatus.loaded,
-        allTransactions: transactions,
-      )),
+      (failure) => emit(
+        state.copyWith(
+          status: TransactionStatus.error,
+          errorMessage: failure.message,
+        ),
+      ),
+      (transactions) => emit(
+        state.copyWith(
+          status: TransactionStatus.loaded,
+          allTransactions: transactions,
+        ),
+      ),
     );
   }
 
@@ -51,21 +55,25 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     AddTransactionEvent event,
     Emitter<TransactionState> emit,
   ) async {
-    final result = await addTransaction(AddTransactionParams(
-      id: const Uuid().v4(),
-      amount: event.amount,
-      currencyCode: event.currencyCode,
-      category: event.category,
-      date: event.date,
-      note: event.note,
-      type: event.type,
-    ));
+    final result = await addTransaction(
+      AddTransactionParams(
+        id: const Uuid().v4(),
+        amount: event.amount,
+        currencyCode: event.currencyCode,
+        category: event.category,
+        date: event.date,
+        note: event.note,
+        type: event.type,
+      ),
+    );
 
     await result.match(
-      (failure) async => emit(state.copyWith(
-        status: TransactionStatus.error,
-        errorMessage: failure.message,
-      )),
+      (failure) async => emit(
+        state.copyWith(
+          status: TransactionStatus.error,
+          errorMessage: failure.message,
+        ),
+      ),
       (_) async => _onLoadTransactions(const LoadTransactions(), emit),
     );
   }
@@ -74,21 +82,25 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     UpdateTransactionEvent event,
     Emitter<TransactionState> emit,
   ) async {
-    final result = await updateTransaction(UpdateTransactionParams(
-      id: event.id,
-      amount: event.amount,
-      currencyCode: event.currencyCode,
-      category: event.category,
-      date: event.date,
-      note: event.note,
-      type: event.type,
-    ));
+    final result = await updateTransaction(
+      UpdateTransactionParams(
+        id: event.id,
+        amount: event.amount,
+        currencyCode: event.currencyCode,
+        category: event.category,
+        date: event.date,
+        note: event.note,
+        type: event.type,
+      ),
+    );
 
     await result.match(
-      (failure) async => emit(state.copyWith(
-        status: TransactionStatus.error,
-        errorMessage: failure.message,
-      )),
+      (failure) async => emit(
+        state.copyWith(
+          status: TransactionStatus.error,
+          errorMessage: failure.message,
+        ),
+      ),
       (_) async => _onLoadTransactions(const LoadTransactions(), emit),
     );
   }
@@ -100,10 +112,12 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     final result = await deleteTransaction(DeleteTransactionParams(event.id));
 
     await result.match(
-      (failure) async => emit(state.copyWith(
-        status: TransactionStatus.error,
-        errorMessage: failure.message,
-      )),
+      (failure) async => emit(
+        state.copyWith(
+          status: TransactionStatus.error,
+          errorMessage: failure.message,
+        ),
+      ),
       (_) async => _onLoadTransactions(const LoadTransactions(), emit),
     );
   }
@@ -112,11 +126,13 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     FilterTransactions event,
     Emitter<TransactionState> emit,
   ) {
-    emit(state.copyWith(
-      filterCategory: event.category,
-      filterType: event.type,
-      clearFilterCategory: event.category == null,
-      clearFilterType: event.type == null,
-    ));
+    emit(
+      state.copyWith(
+        filterCategory: event.category,
+        filterType: event.type,
+        clearFilterCategory: event.category == null,
+        clearFilterType: event.type == null,
+      ),
+    );
   }
 }

@@ -27,7 +27,9 @@ class TransactionLocalDataSourceImpl implements TransactionLocalDataSource {
   }
 
   @override
-  Future<TransactionModel> updateTransaction(TransactionModel transaction) async {
+  Future<TransactionModel> updateTransaction(
+    TransactionModel transaction,
+  ) async {
     if (!box.containsKey(transaction.id)) {
       throw const NotFoundFailure('Transaction not found');
     }

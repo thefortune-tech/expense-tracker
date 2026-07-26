@@ -39,7 +39,8 @@ class _TransactionListView extends StatelessWidget {
       ),
       body: BlocBuilder<TransactionBloc, TransactionState>(
         builder: (context, state) {
-          if (state.status == TransactionStatus.loading || state.status == TransactionStatus.initial) {
+          if (state.status == TransactionStatus.loading ||
+              state.status == TransactionStatus.initial) {
             return const Center(child: CircularProgressIndicator());
           }
 
@@ -63,7 +64,8 @@ class _TransactionListView extends StatelessWidget {
             );
           }
 
-          final sortedKeys = grouped.keys.toList()..sort((a, b) => b.compareTo(a));
+          final sortedKeys = grouped.keys.toList()
+            ..sort((a, b) => b.compareTo(a));
 
           return ListView.builder(
             padding: const EdgeInsets.all(12),
@@ -76,7 +78,10 @@ class _TransactionListView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8,
+                      horizontal: 4,
+                    ),
                     child: Text(
                       dayKey,
                       style: const TextStyle(
@@ -86,21 +91,25 @@ class _TransactionListView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  ...dayTransactions.map((t) => TransactionListTile(
-                        transaction: t,
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => BlocProvider.value(
-                              value: context.read<TransactionBloc>(),
-                              child: AddEditTransactionPage(existingTransaction: t),
+                  ...dayTransactions.map(
+                    (t) => TransactionListTile(
+                      transaction: t,
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => BlocProvider.value(
+                            value: context.read<TransactionBloc>(),
+                            child: AddEditTransactionPage(
+                              existingTransaction: t,
                             ),
                           ),
                         ),
-                        onDelete: () => context
-                            .read<TransactionBloc>()
-                            .add(DeleteTransactionEvent(t.id)),
-                      )),
+                      ),
+                      onDelete: () => context.read<TransactionBloc>().add(
+                        DeleteTransactionEvent(t.id),
+                      ),
+                    ),
+                  ),
                 ],
               );
             },
@@ -139,7 +148,10 @@ void _showFilterSheet(BuildContext context) {
           children: [
             const Text(
               'Filter by type',
-              style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 12),
             Wrap(
@@ -155,14 +167,18 @@ void _showFilterSheet(BuildContext context) {
                 ActionChip(
                   label: const Text('Expenses'),
                   onPressed: () {
-                    bloc.add(const FilterTransactions(type: TransactionType.expense));
+                    bloc.add(
+                      const FilterTransactions(type: TransactionType.expense),
+                    );
                     Navigator.pop(sheetContext);
                   },
                 ),
                 ActionChip(
                   label: const Text('Income'),
                   onPressed: () {
-                    bloc.add(const FilterTransactions(type: TransactionType.income));
+                    bloc.add(
+                      const FilterTransactions(type: TransactionType.income),
+                    );
                     Navigator.pop(sheetContext);
                   },
                 ),

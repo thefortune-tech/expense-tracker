@@ -17,18 +17,17 @@ class ProfileNotifier extends Notifier<ProfileState> {
   Future<void> _checkCurrentProfile() async {
     final result = await sl<GetCurrentProfile>().call(NoParams());
 
-    result.match(
-      (failure) => state = ProfileState.error(failure.message),
-      (profile) {
-        if (profile == null) {
-          state = const ProfileState.needsSetup();
-        } else if (profile.hasPin) {
-          state = ProfileState.needsPinEntry(profile);
-        } else {
-          state = ProfileState.unlocked(profile);
-        }
-      },
-    );
+    result.match((failure) => state = ProfileState.error(failure.message), (
+      profile,
+    ) {
+      if (profile == null) {
+        state = const ProfileState.needsSetup();
+      } else if (profile.hasPin) {
+        state = ProfileState.needsPinEntry(profile);
+      } else {
+        state = ProfileState.unlocked(profile);
+      }
+    });
   }
 
   Future<void> createProfile({
@@ -60,16 +59,15 @@ class ProfileNotifier extends Notifier<ProfileState> {
 
     final result = await sl<VerifyPin>().call(VerifyPinParams(enteredPin));
 
-    result.match(
-      (failure) => state = ProfileState.error(failure.message),
-      (isCorrect) {
-        if (isCorrect) {
-          state = ProfileState.unlocked(currentProfile);
-        } else {
-          state = ProfileState.needsPinEntry(currentProfile);
-        }
-      },
-    );
+    result.match((failure) => state = ProfileState.error(failure.message), (
+      isCorrect,
+    ) {
+      if (isCorrect) {
+        state = ProfileState.unlocked(currentProfile);
+      } else {
+        state = ProfileState.needsPinEntry(currentProfile);
+      }
+    });
   }
 }
 

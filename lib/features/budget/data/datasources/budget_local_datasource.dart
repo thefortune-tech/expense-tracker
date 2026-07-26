@@ -22,13 +22,21 @@ class BudgetLocalDataSourceImpl implements BudgetLocalDataSource {
 
   const BudgetLocalDataSourceImpl(this.box);
 
-  String _keyFor({required String category, required int month, required int year}) {
+  String _keyFor({
+    required String category,
+    required int month,
+    required int year,
+  }) {
     return '${category}_${month}_$year';
   }
 
   @override
   Future<BudgetModel> setBudget(BudgetModel budget) async {
-    final key = _keyFor(category: budget.category, month: budget.month, year: budget.year);
+    final key = _keyFor(
+      category: budget.category,
+      month: budget.month,
+      year: budget.year,
+    );
     await box.put(key, budget);
     return budget;
   }
@@ -40,7 +48,11 @@ class BudgetLocalDataSourceImpl implements BudgetLocalDataSource {
       throw const NotFoundFailure('Budget not found');
     }
     final budget = match.first;
-    final key = _keyFor(category: budget.category, month: budget.month, year: budget.year);
+    final key = _keyFor(
+      category: budget.category,
+      month: budget.month,
+      year: budget.year,
+    );
     await box.delete(key);
   }
 

@@ -23,5 +23,10 @@ class CategoryBreakdown extends Equatable {
   bool get isOverBudget => hasBudget && totalSpent > budgetLimit!;
 
   @override
-  List<Object?> get props => [category, totalSpent, budgetLimit, percentageOfTotalSpending];
+  List<Object?> get props => [
+    category,
+    totalSpent,
+    budgetLimit,
+    percentageOfTotalSpending,
+  ];
 }

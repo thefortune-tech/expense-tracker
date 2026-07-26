@@ -12,22 +12,44 @@ class DashboardNotifier extends Notifier<DashboardState> {
   }
 
   Future<void> _load() async {
-    state = state.copyWith(status: DashboardStatus.loading);
+    try {
+      final result = await sl<GetDashboardSummary>().call(
+        GetDashboardSummaryParams(
+          month: state.selectedMonth,
+          year: state.selectedYear,
+        ),
+      );
 
-    final result = await sl<GetDashboardSummary>().call(
-      GetDashboardSummaryParams(month: state.selectedMonth, year: state.selectedYear),
-    );
-
-    result.match(
-      (failure) => state = state.copyWith(
+      result.match(
+        (failure) {
+          // ignore: avoid_print
+          print('DASHBOARD FAILURE: ${failure.message}');
+          state = state.copyWith(
+            status: DashboardStatus.error,
+            errorMessage: failure.message,
+          );
+        },
+        (summary) {
+          // ignore: avoid_print
+          print(
+            'DASHBOARD SUCCESS: income=${summary.totalIncome} expense=${summary.totalExpense}',
+          );
+          state = state.copyWith(
+            status: DashboardStatus.loaded,
+            summary: summary,
+          );
+        },
+      );
+    } catch (e, stack) {
+      // ignore: avoid_print
+      print('DASHBOARD CRASH: $e');
+      // ignore: avoid_print
+      print(stack);
+      state = state.copyWith(
         status: DashboardStatus.error,
-        errorMessage: failure.message,
-      ),
-      (summary) => state = state.copyWith(
-        status: DashboardStatus.loaded,
-        summary: summary,
-      ),
-    );
+        errorMessage: e.toString(),
+      );
+    }
   }
 
   void goToPreviousMonth() {
@@ -37,7 +59,11 @@ class DashboardNotifier extends Notifier<DashboardState> {
       month = 12;
       year -= 1;
     }
-    state = state.copyWith(selectedMonth: month, selectedYear: year);
+    state = state.copyWith(
+      status: DashboardStatus.loading,
+      selectedMonth: month,
+      selectedYear: year,
+    );
     _load();
   }
 
@@ -48,13 +74,19 @@ class DashboardNotifier extends Notifier<DashboardState> {
       month = 1;
       year += 1;
     }
-    state = state.copyWith(selectedMonth: month, selectedYear: year);
+    state = state.copyWith(
+      status: DashboardStatus.loading,
+      selectedMonth: month,
+      selectedYear: year,
+    );
     _load();
   }
 
-  void refresh() => _load();
+  void refresh() {
+    state = state.copyWith(status: DashboardStatus.loading);
+    _load();
+  }
 }
 
-final dashboardNotifierProvider = NotifierProvider<DashboardNotifier, DashboardState>(
-  DashboardNotifier.new,
-);
+final dashboardNotifierProvider =
+    NotifierProvider<DashboardNotifier, DashboardState>(DashboardNotifier.new);

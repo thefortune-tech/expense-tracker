@@ -15,7 +15,8 @@ class GetTransactionByIdParams extends Equatable {
   List<Object> get props => [id];
 }
 
-class GetTransactionById implements UseCase<Transaction, GetTransactionByIdParams> {
+class GetTransactionById
+    implements UseCase<Transaction, GetTransactionByIdParams> {
   final TransactionRepository repository;
 
   const GetTransactionById(this.repository);
@@ -25,4 +26,3 @@ class GetTransactionById implements UseCase<Transaction, GetTransactionByIdParam
     return repository.getTransactionById(params.id);
   }
 }
-

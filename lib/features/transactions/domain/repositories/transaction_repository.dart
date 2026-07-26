@@ -6,7 +6,9 @@ import '../entities/transaction.dart';
 abstract class TransactionRepository {
   Future<Either<Failure, Transaction>> addTransaction(Transaction transaction);
 
-  Future<Either<Failure, Transaction>> updateTransaction(Transaction transaction);
+  Future<Either<Failure, Transaction>> updateTransaction(
+    Transaction transaction,
+  );
 
   Future<Either<Failure, Unit>> deleteTransaction(String id);
 

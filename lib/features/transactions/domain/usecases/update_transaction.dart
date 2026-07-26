@@ -7,13 +7,16 @@ import '../entities/transaction.dart';
 import '../repositories/transaction_repository.dart';
 import 'transaction_validator.dart';
 
-class UpdateTransaction implements UseCase<Transaction, UpdateTransactionParams> {
+class UpdateTransaction
+    implements UseCase<Transaction, UpdateTransactionParams> {
   final TransactionRepository repository;
 
   const UpdateTransaction(this.repository);
 
   @override
-  Future<Either<Failure, Transaction>> call(UpdateTransactionParams params) async {
+  Future<Either<Failure, Transaction>> call(
+    UpdateTransactionParams params,
+  ) async {
     final validation = TransactionValidator.validate(
       amount: params.amount,
       category: params.category,
@@ -57,5 +60,13 @@ class UpdateTransactionParams extends Equatable {
   });
 
   @override
-  List<Object> get props => [id, amount, currencyCode, category, date, note, type];
+  List<Object> get props => [
+    id,
+    amount,
+    currencyCode,
+    category,
+    date,
+    note,
+    type,
+  ];
 }

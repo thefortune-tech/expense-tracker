@@ -13,7 +13,9 @@ class TransactionRepositoryImpl implements TransactionRepository {
   const TransactionRepositoryImpl(this.localDataSource);
 
   @override
-  Future<Either<Failure, Transaction>> addTransaction(Transaction transaction) async {
+  Future<Either<Failure, Transaction>> addTransaction(
+    Transaction transaction,
+  ) async {
     try {
       final model = TransactionModel.fromEntity(transaction);
       final result = await localDataSource.addTransaction(model);
@@ -26,7 +28,9 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<Either<Failure, Transaction>> updateTransaction(Transaction transaction) async {
+  Future<Either<Failure, Transaction>> updateTransaction(
+    Transaction transaction,
+  ) async {
     try {
       final model = TransactionModel.fromEntity(transaction);
       final result = await localDataSource.updateTransaction(model);

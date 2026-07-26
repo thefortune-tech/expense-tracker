@@ -11,8 +11,18 @@ class DashboardPage extends ConsumerWidget {
   const DashboardPage({super.key});
 
   static const _monthNames = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December',
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
   ];
 
   @override
@@ -76,13 +86,19 @@ class DashboardPage extends ConsumerWidget {
                 const SizedBox(height: 16),
                 const Text(
                   'Spending by Category',
-                  style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold, fontSize: 16),
+                  style: TextStyle(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Card(
                   child: Padding(
                     padding: const EdgeInsets.all(16),
-                    child: CategoryPieChart(breakdowns: state.summary!.categoryBreakdowns),
+                    child: CategoryPieChart(
+                      breakdowns: state.summary!.categoryBreakdowns,
+                    ),
                   ),
                 ),
               ],

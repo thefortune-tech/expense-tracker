@@ -14,7 +14,9 @@ class BudgetValidator {
       return const Left(ValidationFailure('Category cannot be empty'));
     }
     if (monthlyLimit <= 0) {
-      return const Left(ValidationFailure('Monthly limit must be greater than zero'));
+      return const Left(
+        ValidationFailure('Monthly limit must be greater than zero'),
+      );
     }
     if (currencyCode.trim().isEmpty) {
       return const Left(ValidationFailure('Currency must be selected'));

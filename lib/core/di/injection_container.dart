@@ -27,6 +27,7 @@ import '../../features/transactions/domain/usecases/delete_transaction.dart';
 import '../../features/transactions/domain/usecases/get_all_transactions.dart';
 import '../../features/transactions/domain/usecases/get_transaction_by_id.dart';
 import '../../features/transactions/domain/usecases/update_transaction.dart';
+import '../../features/budget/presentation/bloc/budget_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -37,7 +38,9 @@ Future<void> initDependencies() async {
   Hive.registerAdapter(UserProfileModelAdapter());
   Hive.registerAdapter(BudgetModelAdapter());
 
-  final transactionBox = await Hive.openBox<TransactionModel>('transactions_box');
+  final transactionBox = await Hive.openBox<TransactionModel>(
+    'transactions_box',
+  );
   final profileBox = await Hive.openBox<UserProfileModel>('profile_box');
   final budgetBox = await Hive.openBox<BudgetModel>('budget_box');
 
@@ -67,19 +70,27 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<BudgetLocalDataSource>(
     () => BudgetLocalDataSourceImpl(budgetBox),
   );
-  sl.registerLazySingleton<BudgetRepository>(
-    () => BudgetRepositoryImpl(sl()),
-  );
+  sl.registerLazySingleton<BudgetRepository>(() => BudgetRepositoryImpl(sl()));
   sl.registerLazySingleton(() => SetBudget(sl()));
   sl.registerLazySingleton(() => GetBudgetsForMonth(sl()));
   sl.registerLazySingleton(() => GetBudgetForCategory(sl()));
   sl.registerLazySingleton(() => DeleteBudget(sl()));
 
   sl.registerLazySingleton(() => GetDashboardSummary(sl(), sl()));
-    sl.registerFactory(() => TransactionBloc(
-        getAllTransactions: sl(),
-        addTransaction: sl(),
-        updateTransaction: sl(),
-        deleteTransaction: sl(),
-      ));
+  sl.registerFactory(
+    () => TransactionBloc(
+      getAllTransactions: sl(),
+      addTransaction: sl(),
+      updateTransaction: sl(),
+      deleteTransaction: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => BudgetBloc(
+      getBudgetsForMonth: sl(),
+      setBudget: sl(),
+      deleteBudget: sl(),
+      getAllTransactions: sl(),
+    ),
+  );
 }

@@ -24,7 +24,10 @@ class CategoryPieChart extends StatelessWidget {
       return const SizedBox(
         height: 220,
         child: Center(
-          child: Text('No expenses this month', style: TextStyle(color: AppColors.textSecondary)),
+          child: Text(
+            'No expenses this month',
+            style: TextStyle(color: AppColors.textSecondary),
+          ),
         ),
       );
     }
@@ -78,7 +81,10 @@ class CategoryPieChart extends StatelessWidget {
                       Expanded(
                         child: Text(
                           b.category,
-                          style: const TextStyle(color: AppColors.textPrimary, fontSize: 12),
+                          style: const TextStyle(
+                            color: AppColors.textPrimary,
+                            fontSize: 12,
+                          ),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),

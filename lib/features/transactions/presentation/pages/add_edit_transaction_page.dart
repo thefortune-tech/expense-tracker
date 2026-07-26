@@ -69,24 +69,28 @@ class _AddEditTransactionPageState extends State<AddEditTransactionPage> {
     final bloc = context.read<TransactionBloc>();
 
     if (_isEditing) {
-      bloc.add(UpdateTransactionEvent(
-        id: widget.existingTransaction!.id,
-        amount: amount,
-        currencyCode: _currency,
-        category: category,
-        date: _date,
-        note: _noteController.text.trim(),
-        type: _type,
-      ));
+      bloc.add(
+        UpdateTransactionEvent(
+          id: widget.existingTransaction!.id,
+          amount: amount,
+          currencyCode: _currency,
+          category: category,
+          date: _date,
+          note: _noteController.text.trim(),
+          type: _type,
+        ),
+      );
     } else {
-      bloc.add(AddTransactionEvent(
-        amount: amount,
-        currencyCode: _currency,
-        category: category,
-        date: _date,
-        note: _noteController.text.trim(),
-        type: _type,
-      ));
+      bloc.add(
+        AddTransactionEvent(
+          amount: amount,
+          currencyCode: _currency,
+          category: category,
+          date: _date,
+          note: _noteController.text.trim(),
+          type: _type,
+        ),
+      );
     }
 
     Navigator.pop(context);
@@ -95,7 +99,9 @@ class _AddEditTransactionPageState extends State<AddEditTransactionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_isEditing ? 'Edit Transaction' : 'Add Transaction')),
+      appBar: AppBar(
+        title: Text(_isEditing ? 'Edit Transaction' : 'Add Transaction'),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -103,26 +109,43 @@ class _AddEditTransactionPageState extends State<AddEditTransactionPage> {
           children: [
             SegmentedButton<TransactionType>(
               segments: const [
-                ButtonSegment(value: TransactionType.expense, label: Text('Expense')),
-                ButtonSegment(value: TransactionType.income, label: Text('Income')),
+                ButtonSegment(
+                  value: TransactionType.expense,
+                  label: Text('Expense'),
+                ),
+                ButtonSegment(
+                  value: TransactionType.income,
+                  label: Text('Income'),
+                ),
               ],
               selected: {_type},
-              onSelectionChanged: (selection) => setState(() => _type = selection.first),
+              onSelectionChanged: (selection) =>
+                  setState(() => _type = selection.first),
             ),
             const SizedBox(height: 20),
             TextField(
               controller: _amountController,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
               style: const TextStyle(color: AppColors.textPrimary),
-              decoration: const InputDecoration(labelText: 'Amount', border: OutlineInputBorder()),
+              decoration: const InputDecoration(
+                labelText: 'Amount',
+                border: OutlineInputBorder(),
+              ),
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
               initialValue: _currency,
               dropdownColor: AppColors.surface,
               style: const TextStyle(color: AppColors.textPrimary),
-              decoration: const InputDecoration(labelText: 'Currency', border: OutlineInputBorder()),
-              items: _currencies.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+              decoration: const InputDecoration(
+                labelText: 'Currency',
+                border: OutlineInputBorder(),
+              ),
+              items: _currencies
+                  .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                  .toList(),
               onChanged: (value) {
                 if (value != null) setState(() => _currency = value);
               },
@@ -131,13 +154,19 @@ class _AddEditTransactionPageState extends State<AddEditTransactionPage> {
             TextField(
               controller: _categoryController,
               style: const TextStyle(color: AppColors.textPrimary),
-              decoration: const InputDecoration(labelText: 'Category', border: OutlineInputBorder()),
+              decoration: const InputDecoration(
+                labelText: 'Category',
+                border: OutlineInputBorder(),
+              ),
             ),
             const SizedBox(height: 16),
             InkWell(
               onTap: _pickDate,
               child: InputDecorator(
-                decoration: const InputDecoration(labelText: 'Date', border: OutlineInputBorder()),
+                decoration: const InputDecoration(
+                  labelText: 'Date',
+                  border: OutlineInputBorder(),
+                ),
                 child: Text(
                   '${_date.year}-${_date.month.toString().padLeft(2, '0')}-${_date.day.toString().padLeft(2, '0')}',
                   style: const TextStyle(color: AppColors.textPrimary),
@@ -148,7 +177,10 @@ class _AddEditTransactionPageState extends State<AddEditTransactionPage> {
             TextField(
               controller: _noteController,
               style: const TextStyle(color: AppColors.textPrimary),
-              decoration: const InputDecoration(labelText: 'Note (optional)', border: OutlineInputBorder()),
+              decoration: const InputDecoration(
+                labelText: 'Note (optional)',
+                border: OutlineInputBorder(),
+              ),
               maxLines: 2,
             ),
             const SizedBox(height: 24),

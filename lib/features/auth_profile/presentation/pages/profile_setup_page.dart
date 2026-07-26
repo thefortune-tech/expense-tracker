@@ -31,7 +31,9 @@ class _ProfileSetupPageState extends ConsumerState<ProfileSetupPage> {
 
     final pin = _pinController.text.trim();
 
-    ref.read(profileNotifierProvider.notifier).createProfile(
+    ref
+        .read(profileNotifierProvider.notifier)
+        .createProfile(
           name: name,
           pin: pin.isEmpty ? null : pin,
           defaultCurrencyCode: _selectedCurrency,
@@ -111,7 +113,9 @@ class _ProfileSetupPageState extends ConsumerState<ProfileSetupPage> {
                   ),
                 ),
               ElevatedButton(
-                onPressed: state.status == ProfileStatus.loading ? null : _submit,
+                onPressed: state.status == ProfileStatus.loading
+                    ? null
+                    : _submit,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.accent,
                   padding: const EdgeInsets.symmetric(vertical: 16),

@@ -40,7 +40,10 @@ class BudgetRepositoryImpl implements BudgetRepository {
   }
 
   @override
-  Future<Either<Failure, List<Budget>>> getBudgetsForMonth(int month, int year) async {
+  Future<Either<Failure, List<Budget>>> getBudgetsForMonth(
+    int month,
+    int year,
+  ) async {
     try {
       final models = await localDataSource.getBudgetsForMonth(month, year);
       return Right(models.map((m) => m.toEntity()).toList());

@@ -37,7 +37,10 @@ class TransactionListTile extends StatelessWidget {
           onTap: onTap,
           title: Text(
             transaction.category,
-            style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
+            style: const TextStyle(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           subtitle: transaction.note.isEmpty
               ? null
@@ -49,7 +52,11 @@ class TransactionListTile extends StatelessWidget {
                 ),
           trailing: Text(
             '$sign${CurrencyFormatter.format(transaction.amount, transaction.currencyCode)}',
-            style: TextStyle(color: amountColor, fontWeight: FontWeight.bold, fontSize: 15),
+            style: TextStyle(
+              color: amountColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+            ),
           ),
         ),
       ),

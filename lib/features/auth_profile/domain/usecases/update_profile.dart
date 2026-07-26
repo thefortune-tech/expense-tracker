@@ -58,4 +58,3 @@ class UpdateProfile implements UseCase<UserProfile, UpdateProfileParams> {
     return repository.updateProfile(profile);
   }
 }
-

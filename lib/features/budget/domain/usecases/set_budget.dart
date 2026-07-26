@@ -56,5 +56,12 @@ class SetBudgetParams extends Equatable {
   });
 
   @override
-  List<Object> get props => [id, category, monthlyLimit, currencyCode, month, year];
+  List<Object> get props => [
+    id,
+    category,
+    monthlyLimit,
+    currencyCode,
+    month,
+    year,
+  ];
 }

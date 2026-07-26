@@ -54,7 +54,15 @@ class UpdateTransactionEvent extends TransactionEvent {
   });
 
   @override
-  List<Object?> get props => [id, amount, currencyCode, category, date, note, type];
+  List<Object?> get props => [
+    id,
+    amount,
+    currencyCode,
+    category,
+    date,
+    note,
+    type,
+  ];
 }
 
 class DeleteTransactionEvent extends TransactionEvent {

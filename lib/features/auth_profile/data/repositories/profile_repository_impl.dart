@@ -13,7 +13,9 @@ class ProfileRepositoryImpl implements ProfileRepository {
   const ProfileRepositoryImpl(this.localDataSource);
 
   @override
-  Future<Either<Failure, UserProfile>> createProfile(UserProfile profile) async {
+  Future<Either<Failure, UserProfile>> createProfile(
+    UserProfile profile,
+  ) async {
     try {
       final model = UserProfileModel.fromEntity(profile);
       final result = await localDataSource.createProfile(model);
@@ -26,7 +28,9 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
-  Future<Either<Failure, UserProfile>> updateProfile(UserProfile profile) async {
+  Future<Either<Failure, UserProfile>> updateProfile(
+    UserProfile profile,
+  ) async {
     try {
       final model = UserProfileModel.fromEntity(profile);
       final result = await localDataSource.updateProfile(model);
@@ -56,7 +60,9 @@ class ProfileRepositoryImpl implements ProfileRepository {
       final model = await localDataSource.getCurrentProfile();
 
       if (model == null) {
-        return const Left(NotFoundFailure('No profile exists to verify against'));
+        return const Left(
+          NotFoundFailure('No profile exists to verify against'),
+        );
       }
 
       if (!model.hasPin) {

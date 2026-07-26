@@ -20,11 +20,11 @@ class DashboardState extends Equatable {
   });
 
   DashboardState.initial()
-      : this(
-          status: DashboardStatus.loading,
-          selectedMonth: DateTime.now().month,
-          selectedYear: DateTime.now().year,
-        );
+    : this(
+        status: DashboardStatus.loading,
+        selectedMonth: DateTime.now().month,
+        selectedYear: DateTime.now().year,
+      );
 
   DashboardState copyWith({
     DashboardStatus? status,
@@ -43,5 +43,11 @@ class DashboardState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [status, summary, errorMessage, selectedMonth, selectedYear];
+  List<Object?> get props => [
+    status,
+    summary,
+    errorMessage,
+    selectedMonth,
+    selectedYear,
+  ];
 }

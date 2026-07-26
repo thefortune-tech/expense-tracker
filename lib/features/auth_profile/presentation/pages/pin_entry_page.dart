@@ -72,7 +72,11 @@ class _PinEntryPageState extends ConsumerState<PinEntryPage> {
                 obscureText: true,
                 maxLength: 4,
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: AppColors.textPrimary, fontSize: 24, letterSpacing: 8),
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: 24,
+                  letterSpacing: 8,
+                ),
                 decoration: InputDecoration(
                   counterText: '',
                   border: const OutlineInputBorder(),

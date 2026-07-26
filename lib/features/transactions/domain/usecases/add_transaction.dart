@@ -27,7 +27,15 @@ class AddTransactionParams extends Equatable {
   });
 
   @override
-  List<Object> get props => [id, amount, currencyCode, category, date, note, type];
+  List<Object> get props => [
+    id,
+    amount,
+    currencyCode,
+    category,
+    date,
+    note,
+    type,
+  ];
 }
 
 class AddTransaction implements UseCase<Transaction, AddTransactionParams> {
@@ -59,4 +67,3 @@ class AddTransaction implements UseCase<Transaction, AddTransactionParams> {
     );
   }
 }
-

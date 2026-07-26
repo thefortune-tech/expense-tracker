@@ -20,5 +20,11 @@ class DashboardSummary extends Equatable {
   double get netBalance => totalIncome - totalExpense;
 
   @override
-  List<Object> get props => [totalIncome, totalExpense, month, year, categoryBreakdowns];
+  List<Object> get props => [
+    totalIncome,
+    totalExpense,
+    month,
+    year,
+    categoryBreakdowns,
+  ];
 }

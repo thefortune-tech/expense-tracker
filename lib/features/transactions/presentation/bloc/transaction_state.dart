@@ -21,17 +21,18 @@ class TransactionState extends Equatable {
 
   List<Transaction> get filteredTransactions {
     return allTransactions.where((t) {
-      final matchesCategory = filterCategory == null || t.category == filterCategory;
+      final matchesCategory =
+          filterCategory == null || t.category == filterCategory;
       final matchesType = filterType == null || t.type == filterType;
       return matchesCategory && matchesType;
-    }).toList()
-      ..sort((a, b) => b.date.compareTo(a.date));
+    }).toList()..sort((a, b) => b.date.compareTo(a.date));
   }
 
   Map<String, List<Transaction>> get groupedByDay {
     final grouped = <String, List<Transaction>>{};
     for (final t in filteredTransactions) {
-      final key = '${t.date.year}-${t.date.month.toString().padLeft(2, '0')}-${t.date.day.toString().padLeft(2, '0')}';
+      final key =
+          '${t.date.year}-${t.date.month.toString().padLeft(2, '0')}-${t.date.day.toString().padLeft(2, '0')}';
       grouped.putIfAbsent(key, () => []).add(t);
     }
     return grouped;
@@ -49,12 +50,20 @@ class TransactionState extends Equatable {
     return TransactionState(
       status: status ?? this.status,
       allTransactions: allTransactions ?? this.allTransactions,
-      filterCategory: clearFilterCategory ? null : (filterCategory ?? this.filterCategory),
+      filterCategory: clearFilterCategory
+          ? null
+          : (filterCategory ?? this.filterCategory),
       filterType: clearFilterType ? null : (filterType ?? this.filterType),
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
   @override
-  List<Object?> get props => [status, allTransactions, filterCategory, filterType, errorMessage];
+  List<Object?> get props => [
+    status,
+    allTransactions,
+    filterCategory,
+    filterType,
+    errorMessage,
+  ];
 }

@@ -58,4 +58,3 @@ class CreateProfile implements UseCase<UserProfile, CreateProfileParams> {
     return repository.createProfile(profile);
   }
 }
-

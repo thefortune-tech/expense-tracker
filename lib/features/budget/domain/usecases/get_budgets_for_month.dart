@@ -6,7 +6,8 @@ import '../../../../core/usecases/usecase.dart';
 import '../entities/budget.dart';
 import '../repositories/budget_repository.dart';
 
-class GetBudgetsForMonth implements UseCase<List<Budget>, GetBudgetsForMonthParams> {
+class GetBudgetsForMonth
+    implements UseCase<List<Budget>, GetBudgetsForMonthParams> {
   final BudgetRepository repository;
 
   const GetBudgetsForMonth(this.repository);

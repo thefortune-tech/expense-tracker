@@ -24,4 +24,3 @@ class DeleteTransaction implements UseCase<Unit, DeleteTransactionParams> {
     return repository.deleteTransaction(params.id);
   }
 }
-

@@ -25,7 +25,10 @@ class SummaryCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Net Balance', style: TextStyle(color: AppColors.textSecondary, fontSize: 13)),
+            const Text(
+              'Net Balance',
+              style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
+            ),
             const SizedBox(height: 4),
             Text(
               CurrencyFormatter.format(netBalance, currencyCode),
@@ -81,10 +84,17 @@ class _MiniStat extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(color: AppColors.textSecondary, fontSize: 12)),
+        Text(
+          label,
+          style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
+        ),
         Text(
           CurrencyFormatter.format(amount, currencyCode),
-          style: TextStyle(color: color, fontWeight: FontWeight.w600, fontSize: 15),
+          style: TextStyle(
+            color: color,
+            fontWeight: FontWeight.w600,
+            fontSize: 15,
+          ),
         ),
       ],
     );

@@ -9,66 +9,87 @@ import '../../../transactions/domain/repositories/transaction_repository.dart';
 import '../entities/category_breakdown.dart';
 import '../entities/dashboard_summary.dart';
 
-class GetDashboardSummary implements UseCase<DashboardSummary, GetDashboardSummaryParams> {
+class GetDashboardSummary
+    implements UseCase<DashboardSummary, GetDashboardSummaryParams> {
   final TransactionRepository transactionRepository;
   final BudgetRepository budgetRepository;
 
   const GetDashboardSummary(this.transactionRepository, this.budgetRepository);
 
   @override
-  Future<Either<Failure, DashboardSummary>> call(GetDashboardSummaryParams params) async {
+  Future<Either<Failure, DashboardSummary>> call(
+    GetDashboardSummaryParams params,
+  ) async {
     final transactionsResult = await transactionRepository.getAllTransactions();
 
-    return transactionsResult.match(
-      (failure) => Left(failure),
-      (allTransactions) async {
-        final monthTransactions = allTransactions.where((t) {
-          return t.date.month == params.month && t.date.year == params.year;
-        }).toList();
+    Failure? loadFailure;
+    List<Transaction>? allTransactions;
 
-        final totalIncome = monthTransactions
-            .where((t) => t.type == TransactionType.income)
-            .fold<double>(0, (sum, t) => sum + t.amount);
+    transactionsResult.match(
+      (l) => loadFailure = l,
+      (r) => allTransactions = r,
+    );
 
-        final totalExpense = monthTransactions
-            .where((t) => t.type == TransactionType.expense)
-            .fold<double>(0, (sum, t) => sum + t.amount);
+    if (loadFailure != null) {
+      return Left(loadFailure!);
+    }
 
-        final expensesByCategory = <String, double>{};
-        for (final t in monthTransactions.where((t) => t.type == TransactionType.expense)) {
-          expensesByCategory[t.category] = (expensesByCategory[t.category] ?? 0) + t.amount;
-        }
+    final transactions = allTransactions!;
 
-        final breakdowns = <CategoryBreakdown>[];
-        for (final entry in expensesByCategory.entries) {
-          final budgetResult = await budgetRepository.getBudgetForCategory(
-            category: entry.key,
-            month: params.month,
-            year: params.year,
-          );
+    final monthTransactions = transactions.where((t) {
+      return t.date.month == params.month && t.date.year == params.year;
+    }).toList();
 
-          final budgetLimit = budgetResult.match(
-            (_) => null,
-            (budget) => budget?.monthlyLimit,
-          );
+    final totalIncome = monthTransactions
+        .where((t) => t.type == TransactionType.income)
+        .fold<double>(0, (sum, t) => sum + t.amount);
 
-          breakdowns.add(CategoryBreakdown(
-            category: entry.key,
-            totalSpent: entry.value,
-            budgetLimit: budgetLimit,
-            percentageOfTotalSpending: totalExpense == 0 ? 0 : (entry.value / totalExpense) * 100,
-          ));
-        }
+    final totalExpense = monthTransactions
+        .where((t) => t.type == TransactionType.expense)
+        .fold<double>(0, (sum, t) => sum + t.amount);
 
-        return Right(DashboardSummary(
-          totalIncome: totalIncome,
-          totalExpense: totalExpense,
-          month: params.month,
-          year: params.year,
-          categoryBreakdowns: breakdowns,
-        ));
-      },
-    ) as Future<Either<Failure, DashboardSummary>>;
+    final expensesByCategory = <String, double>{};
+    for (final t in monthTransactions.where(
+      (t) => t.type == TransactionType.expense,
+    )) {
+      expensesByCategory[t.category] =
+          (expensesByCategory[t.category] ?? 0) + t.amount;
+    }
+
+    final breakdowns = <CategoryBreakdown>[];
+    for (final entry in expensesByCategory.entries) {
+      final budgetResult = await budgetRepository.getBudgetForCategory(
+        category: entry.key,
+        month: params.month,
+        year: params.year,
+      );
+
+      final budgetLimit = budgetResult.match(
+        (_) => null,
+        (budget) => budget?.monthlyLimit,
+      );
+
+      breakdowns.add(
+        CategoryBreakdown(
+          category: entry.key,
+          totalSpent: entry.value,
+          budgetLimit: budgetLimit,
+          percentageOfTotalSpending: totalExpense == 0
+              ? 0
+              : (entry.value / totalExpense) * 100,
+        ),
+      );
+    }
+
+    return Right(
+      DashboardSummary(
+        totalIncome: totalIncome,
+        totalExpense: totalExpense,
+        month: params.month,
+        year: params.year,
+        categoryBreakdowns: breakdowns,
+      ),
+    );
   }
 }
 
