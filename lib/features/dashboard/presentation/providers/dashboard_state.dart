@@ -38,7 +38,7 @@ class DashboardState extends Equatable {
       summary: summary ?? this.summary,
       errorMessage: errorMessage ?? this.errorMessage,
       selectedMonth: selectedMonth ?? this.selectedMonth,
-      selectedYear: selectedYear ?? this.selectedYear,
+      selectedYear: selectedMonth ?? this.selectedYear,
     );
   }
 
