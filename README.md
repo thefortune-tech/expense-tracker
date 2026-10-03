@@ -1,4 +1,4 @@
-# Expense Tracker
+# Expense Tracker 
 
 A local-first, multi-currency expense tracker built with Flutter, using strict Clean Architecture, BLoC/Riverpod hybrid state management, and hand-written Hive persistence — no backend, no cloud dependency, fully offline by design.
 
